@@ -17,20 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const formulario = document.querySelector("#formulario"); // console.log(inputMensaje);
   const btnSubmit = document.querySelector('#formulario button[type="submit"]');
   const btnReset = document.querySelector('#formulario button[type="reset"]');
-
-  btnReset.addEventListener('click', function(e){
-    e.preventDefault();
-
-    // reiniciar el objeto
-    email.email = '',
-    email.asunto = '',
-    email.mensaje = '';
-
-    formulario.reset();
-    comprobarEmail();
-
-
-  });
+  const spinner = document.querySelector('#spinner');
 
   //Asignar eventos
   // cuando el evento blur ocurra se ejecuta la funcion = CALLBACK
@@ -39,6 +26,31 @@ document.addEventListener("DOMContentLoaded", function () {
   inputEmail.addEventListener("input", validar);
   inputAsunto.addEventListener("input", validar);
   inputMensaje.addEventListener("input", validar);
+
+  formulario.addEventListener('submit', enviarEmail);
+
+  btnReset.addEventListener('click', function(e){
+    e.preventDefault();
+
+    resetFormulario();
+  });
+
+  function enviarEmail(e){
+    e.preventDefault();
+    
+    spinner.classList.add('flex');
+    spinner.classList.remove('hidden');
+
+    setTimeout(() =>{
+      spinner.classList.remove('flex');
+      spinner.classList.add('hidden');
+
+      resetFormulario();
+
+    }, 3000);
+
+  }
+
 
   function validar(e) {
     // console.log(e.target.parentElement); // recorre el dom hacia el elemento padre
@@ -108,6 +120,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     btnSubmit.classList.remove('opacity-50');
     btnSubmit.disabled = false;
+  }
+
+  function resetFormulario(){
+    // reiniciar el objeto
+    email.email = '',
+    email.asunto = '',
+    email.mensaje = '';
+
+    formulario.reset();
+    comprobarEmail();
+
   }
 
 });
